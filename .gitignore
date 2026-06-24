@@ -1,0 +1,35 @@
+# 1. Dependency Directories
+node_modules/
+vendor/
+
+# 2. Environment Configuration & Secrets
+.env
+.env.*
+!.env.example
+config/.env
+config/local_*.php
+config/ai_api_key.php
+
+# 3. Log Files & Cache
+*.log
+error_log
+access_log
+cache/
+tmp/
+*.cache
+
+# 4. OS & IDE Generated Files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+
+# 5. Local Databases & Dumps
+*.sql
+*.sqlite
+*.mdb
+bengkel_db.sql
