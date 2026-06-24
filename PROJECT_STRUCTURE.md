@@ -1,68 +1,69 @@
-# Architectural Overview & Project Structure
+# Tinjauan Arsitektur & Struktur Project
 
-This document outlines the high-level architecture and organizational philosophy behind **InfoMotive**. Built using native PHP 8, the application adopts a lightweight, clean procedural structure inspired by modern MVC separation of concerns.
+Dokumen ini menjelaskan arsitektur tingkat tinggi (*high-level architecture*) dan filosofi pengorganisasian kode di balik aplikasi **InfoMotive**. Dibangun menggunakan PHP 8 native, aplikasi ini mengadopsi struktur prosedural yang ringan dan bersih, terinspirasi dari pemisahan tugas (*separation of concerns*) pada pola arsitektur MVC modern.
 
-## 🏗️ Design Philosophy
+## 🏗️ Filosofi Desain
 
-The main objective of this architectural structure is to maintain zero external bloated dependencies while demonstrating clear separation between data access, business logic, external AI API handling, and presentation layers.
+Tujuan utama dari arsitektur ini adalah mempertahankan kinerja yang sangat cepat tanpa ketergantungan pada pustaka (*dependencies*) eksternal yang berat, sekaligus menunjukkan pemisahan yang jelas antara akses data, logika bisnis, penanganan percakapan AI eksternal, dan lapisan presentasi (antarmuka).
 
 ```mermaid
 graph TD
-    Client[Client Browser] -->|HTTP Request| Router[Root Pages / Index.php]
+    Client[Browser Pengguna] -->|HTTP Request| Router[Halaman Utama / index.php]
     Client -->|Async Fetch API| API[api/chat_handler.php]
     
     Router --> Config[config/database.php]
     API --> Config
     API --> GenAI[Google Gemini GenAI API]
     
-    Config --> PDO[PDO Database Driver]
-    Config --> Env[config/.env Configurations]
+    Config --> PDO[Driver Database PDO]
+    Config --> Env[Konfigurasi config/.env]
     PDO --> MySQL[(MySQL bengkel_db)]
 ```
 
-## 📂 Detailed Directory Structure
+## 📂 Rincian Struktur Direktori
 
 ### `admin/`
-Contains the secured administration dashboard. Protected via session handling, allowing administrators to execute CRUD operations on products, articles, and workshops.
-- `admin/barang/index.php`: Product catalog management.
-- `admin/artikel/`: Article knowledge base management.
+Berisi halaman dashboard pengelolaan (*Content Management System* / CMS). Sektor ini dilindungi oleh verifikasi sesi otentikasi, memungkinkan pengelola sistem untuk melakukan operasi CRUD (Create, Read, Update, Delete) pada data produk, artikel, dan lokasi bengkel.
+- `admin/barang/index.php`: Halaman manajemen katalog produk.
+- `admin/edukasi/index.php`: Halaman manajemen artikel edukasi.
 
 ### `api/`
-The RESTful communication layer used for asynchronous JavaScript requests (AJAX/Fetch API).
-- `api/chat_handler.php`: The core engine for **BotMotif**. Houses the Intent Detection algorithm, Retrieval-Augmented Generation (RAG) query expansions, multi-model fallback chain (`gemini-1.5-flash` -> `gemini-1.5-flash-8b` -> `gemini-1.5-pro`), and local fallback rules.
+Lapisan komunikasi RESTful API yang digunakan untuk menerima dan merespons permintaan asinkron dari JavaScript di sisi browser (*Fetch API* / AJAX).
+- `api/chat_handler.php`: Mesin utama penggerak asisten virtual **BotMotif**. Memuat algoritma Deteksi Niat (*Intent Detection*), ekspansi kueri *Retrieval-Augmented Generation* (RAG), rantai fallback multi-model AI (`gemini-1.5-flash` -> `gemini-1.5-flash-8b` -> `gemini-1.5-pro`), serta mesin logika cadangan lokal (*local fallback engine*) apabila API melebihi kuota.
+- `api/track_view.php`: Pencatat jumlah klik/tayang yang aman dari ancaman injeksi SQL.
 
 ### `assets/`
-Holds static resources served directly to the client.
-- `assets/css/style.css`: Custom Vanilla CSS rules establishing the Glassmorphism design tokens, variables, and responsive layout grids.
-- `assets/images/`: Cached static images and placeholder assets.
+Menyimpan file statis yang disajikan langsung ke browser pengguna.
+- `assets/css/style.css`: Aturan Vanilla CSS kustom yang merumuskan variabel desain *Glassmorphism*, palet warna premium, dan tata letak responsif (*flexbox* & *grid*).
+- `assets/images/`: Menyimpan foto profil tim dan gambar aset pendukung.
 
 ### `auth/`
-Authentication boundary for session initialization and administrative access control.
-- `auth/login.php`: Secure login portal verifying password hashes (`password_verify`).
-- `auth/logout.php`: Destroys active user sessions and redirects to the landing page.
+Gerbang masuk dan keluar otentikasi untuk verifikasi hak akses.
+- `auth/login.php`: Portal masuk aman yang memvalidasi kecocokan enkripsi kata sandi menggunakan fungsi bawaan `password_verify()`.
+- `auth/logout.php`: Mengakhiri sesi pengguna secara aman dan mengarahkan kembali ke halaman utama.
 
 ### `config/`
-Application lifecycle configuration and environment management.
-- `config/.env`: Environment variable file isolating sensitive secrets (ignored by Git).
-- `config/.env.example`: Sanitized configuration template for deployment reference.
-- `config/database.php`: Bootstraps PDO connection, verifies database tables, and executes automated schema updates.
-- `config/ai_config.php`: Establishes AI provider constants and extracts API keys from environment settings.
+Pusat pengaturan siklus hidup aplikasi dan kredensial lingkungan.
+- `config/.env`: File variabel lingkungan lokal yang memisahkan dan melindungi data rahasia (disembunyikan oleh `.gitignore`).
+- `config/.env.example`: Templat konfigurasi bersih untuk panduan instalasi di komputer atau server lain.
+- `config/database.php`: Menginisialisasi koneksi aman PDO (*PHP Data Objects*), memvalidasi keberadaan tabel, dan menjalankan skema pembaruan otomatis.
+- `config/ai_config.php`: Membaca dan menetapkan variabel konstan untuk koneksi ke layanan Google GenAI.
 
 ### `database/seeds/`
-Protected database initialization and seeding utilities. Secured to prevent unauthorized access via HTTP web requests.
-- `import_articles.php`: Parses automotive news feeds and seeds the `articles` table.
-- `import_products.php`: Populates the `products` table with real-world curated pricing data.
-- `seed_bengkel.php`: Seeds verified workshop locations with latitude and longitude data.
-- `reset_admin.php`: Administrative recovery tool to re-establish the default admin account.
+Direktori terlindungi untuk skrip inisialisasi dan pengisian data otomatis (*seeder*). Sektor ini dikunci dengan validasi baris perintah (CLI) untuk mencegah eksekusi sepihak melalui browser web.
+- `import_articles.php`: Mengambil umpan berita otomotif eksternal dan memuatnya ke dalam tabel `articles`.
+- `import_products.php`: Mengisi tabel `products` dengan daftar harga dan suku cadang asli di pasaran.
+- `seed_bengkel.php`: Mengisi data lokasi bengkel terpercaya beserta koordinat lintang dan bujurnya.
+- `reset_admin.php`: Alat bantu pemulihan untuk mengatur ulang akun admin default.
 
 ### `includes/`
-Modular presentation components included across multiple pages to enforce visual consistency.
-- `includes/chatbot_modal.php`: The interactive floating UI widget for BotMotif.
+Komponen antarmuka modular yang diimpor secara dinamis ke berbagai halaman untuk memastikan konsistensi visual.
+- `includes/chatbot_modal.php`: Struktur widget antarmuka mengambang untuk asisten pintar BotMotif.
 
-### `Root Pages`
-The primary user-facing views combining the Glassmorphism UI components with dynamic database query displays.
-- `index.php`: Premium scrollable landing page.
-- `about.php`: Organization background, vision, and team grid.
-- `edukasi.php`: Automotive knowledge base with category filters.
-- `harga.php`: Spare part price transparency catalog with interactive view tracking.
-- `bengkel.php`: Interactive map view of verified workshop directories.
+### `Halaman Utama (Root Pages)`
+Halaman presentasi utama yang mempertemukan estetika UI *Glassmorphism* dengan pemanggilan kueri database secara dinamis.
+- `index.php`: Halaman beranda utama bergaya premium yang dapat digulir.
+- `about.php`: Halaman profil platform, latar belakang visi, dan susunan tim pengembang.
+- `edukasi.php`: Basis pengetahuan perawatan kendaraan dengan opsi penyaringan kategori.
+- `harga.php`: Katalog transparansi harga suku cadang dengan fitur pelacak tayangan interaktif.
+- `bengkel.php`: Direktori bengkel terpercaya dengan integrasi peta interaktif.

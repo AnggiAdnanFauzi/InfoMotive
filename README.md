@@ -1,85 +1,85 @@
-# InfoMotive - Comprehensive Automotive Digital Platform
+# InfoMotive - Platform Otomotif Digital Terpadu
 
-InfoMotive is a modern web application designed to bring transparency to automotive spare part pricing, provide in-depth vehicle maintenance education, and offer a directory of verified workshops across Indonesia. Built with a focus on seamless UX, robust database structure, and AI-powered conversational assistance.
+InfoMotive adalah aplikasi web modern yang dirancang untuk menghadirkan transparansi harga suku cadang (*sparepart*) otomotif, menyediakan edukasi mendalam terkait perawatan kendaraan, dan menyajikan direktori bengkel terpercaya di seluruh Indonesia. Dibangun dengan fokus pada pengalaman pengguna (UX) yang mulus, struktur database yang tangguh, serta asisten percakapan cerdas berbasis kecerdasan buatan (AI).
 
-## 📌 Project Objective
-This project serves as a comprehensive showcase of full-stack web development capabilities, demonstrating clean architectural patterns, database integration, RESTful API consumption, and prompt engineering using generative AI (Retrieval-Augmented Generation).
+## 📌 Tujuan Project
+Project ini berfungsi sebagai portofolio pengembangan web *full-stack*, menampilkan pola arsitektur yang bersih (*clean procedural architecture*), integrasi database yang matang, konsumsi RESTful API eksternal, serta teknik *prompt engineering* mutakhir menggunakan Generative AI (*Retrieval-Augmented Generation* / RAG).
 
-## 🚀 Highlighted Features
-- **Smart Catalog & Price Transparency**: Interactive product search with real-time modal details, automated view tracking, and min-max price comparison.
-- **AI Conversational Assistant (BotMotif)**: Integration with Google Gemini AI utilizing advanced RAG intent detection and local fallback logic to answer automotive questions while politely rejecting out-of-scope topics.
-- **Interactive Workshop Directory**: Visual map integration (via Leaflet & OpenStreetMap) allowing users to locate nearby trusted workshops and navigate directly via Google Maps.
-- **Educational Knowledge Base**: Curated automotive tips, maintenance guides, and safety articles with category filtering.
-- **Secure Admin Dashboard**: Content management system for administrative users to manage products, view analytics, and monitor system metrics.
+## 🚀 Fitur Unggulan
+- **Katalog Pintar & Transparansi Harga**: Pencarian suku cadang interaktif dengan jendela informasi (*modal*) langsung, pelacakan jumlah tayang (*view tracking*) otomatis, serta perbandingan rentang harga pasar (terendah hingga tertinggi).
+- **Asisten Percakapan AI (BotMotif)**: Integrasi dengan Google Gemini AI menggunakan deteksi niat (*intent detection*) RAG tingkat lanjut dan logika cadangan lokal (*local fallback engine*). Bot mampu menjawab pertanyaan otomotif secara cerdas dan menolak topik di luar konteks dengan santun.
+- **Direktori Bengkel Interaktif**: Integrasi peta visual (berbasis Leaflet & OpenStreetMap) yang memungkinkan pengguna menemukan lokasi bengkel mitra terpercaya terdekat dan melakukan navigasi langsung via Google Maps.
+- **Pusat Edukasi & Pengetahuan**: Kurasi artikel tips otomotif, panduan perawatan berkala, dan keselamatan berkendara yang dilengkapi dengan fitur penyaringan kategori.
+- **Dashboard Admin Menggunakan Proteksi Sesi**: Sistem manajemen konten (CMS) bagi administrator untuk mengelola produk, memantau analitik tayangan, dan mengawasi metrik sistem secara aman.
 
-## 🛠️ Technology Stack
-- **Frontend**: HTML5, Vanilla CSS (Custom Design System with Glassmorphism aesthetics), Vanilla JavaScript, FontAwesome 6, Leaflet.js.
-- **Backend**: PHP 8.x (Native procedural & light-MVC approach), cURL for external API requests.
-- **Database**: MySQL / MariaDB with PDO (PHP Data Objects) prepared statements for SQL injection prevention.
-- **AI Integration**: Google GenAI API (Gemini 1.5 Flash / 2.5 Flash) with customized multi-layer model fallback mechanism.
+## 🛠️ Teknologi yang Digunakan
+- **Frontend**: HTML5, Vanilla CSS (Design System kustom dengan estetika *Glassmorphism*), Vanilla JavaScript, FontAwesome 6, Leaflet.js.
+- **Backend**: PHP 8.x (Pendekatan prosedural & *light-MVC* native), cURL untuk permintaan API eksternal.
+- **Database**: MySQL / MariaDB dengan teknik *Prepared Statements* PDO (PHP Data Objects) guna mencegah ancaman *SQL Injection*.
+- **Integrasi AI**: Google GenAI API (Gemini 1.5 Flash / 2.5 Flash) yang diperkuat dengan mekanisme rantai fallback multi-model untuk menjaga ketersediaan layanan.
 
-## 📁 Repository Structure
+## 📁 Struktur Repository
 ```text
 InfoMotive/
-├── admin/                  # Secure backend CMS dashboard
-├── api/                    # RESTful endpoints & AI chat handler
-├── assets/                 # Custom CSS, JS scripts, and static media
-├── auth/                   # Authentication modules (Login, Session handling)
-├── config/                 # Environment configs & database connection (PDO)
-├── database/               # Database migrations and seeding utilities
-├── includes/               # Reusable UI components (Chatbot modal, Modals)
-└── index.php               # Scrollable premium landing page
+├── admin/                  # Dashboard CMS admin terlindungi
+├── api/                    # RESTful endpoint & penanganan percakapan AI
+├── assets/                 # CSS kustom, file JavaScript, dan media statis
+├── auth/                   # Modul otentikasi (Login, manajemen sesi)
+├── config/                 # Konfigurasi lingkungan & koneksi database PDO
+├── database/               # Skrip utilitas migrasi dan pengisian data (Seeder)
+├── includes/               # Komponen UI modular (Widget chatbot, Modals)
+└── index.php               # Landing page premium utama
 ```
 
-## ⚙️ Installation & Local Setup
+## ⚙️ Panduan Instalasi & Konfigurasi Lokal
 
-### 1. Prerequisites
-- PHP 8.0 or higher
-- MySQL / MariaDB (XAMPP/MAMP/LAMP stack recommended)
+### 1. Persyaratan Sistem
+- PHP 8.0 atau lebih tinggi
+- MySQL / MariaDB (Rekomendasi: paket XAMPP / MAMP / LAMP)
 - Git
 
-### 2. Clone the Repository
+### 2. Kloning Repository
 ```bash
-git clone https://github.com/yourusername/infomotive.git
-cd infomotive
+git clone https://github.com/AnggiAdnanFauzi/InfoMotive.git
+cd InfoMotive
 ```
 
-### 3. Environment Configuration
-Copy the configuration example file and add your custom settings:
+### 3. Konfigurasi Lingkungan (*Environment*)
+Salin file contoh konfigurasi ke file `.env` lokal Anda:
 ```bash
 cp config/.env.example config/.env
 ```
-Open `config/.env` and insert your database credentials and Gemini API Key:
+Buka file `config/.env` dan masukkan kredensial database lokal serta API Key Gemini Anda:
 ```ini
 DB_HOST=localhost
 DB_NAME=bengkel_db
 DB_USER=root
 DB_PASS=
 AI_PROVIDER=gemini
-AI_API_KEY=your_actual_gemini_api_key_here
+AI_API_KEY=masukkan_api_key_gemini_asli_anda_disini
 ```
 
-### 4. Database Setup
-Create a MySQL database named `bengkel_db`. The application features an automated migration and seeding mechanism. Upon accessing the application for the first time, `config/database.php` will automatically establish tables and seed initial sample data.
+### 4. Pengaturan Database
+Buat database MySQL baru dengan nama `bengkel_db`. Aplikasi ini dilengkapi dengan mekanisme migrasi dan seeder otomatis. Ketika Anda mengakses aplikasi untuk pertama kalinya, sistem di `config/database.php` akan secara otomatis membentuk struktur tabel dan mengisi data awal.
 
-### 5. Run the Application
-You can use PHP's built-in development server:
+### 5. Menjalankan Aplikasi
+Anda dapat menggunakan server pengembangan bawaan PHP:
 ```bash
 php -S localhost:8000
 ```
-Access the application in your browser at `http://localhost:8000`.
+Buka aplikasi melalui browser Anda pada tautan `http://localhost:8000`.
 
-## 📸 Application Preview
-- **Landing Page & Hero Section**: `assets/images/screenshots/landing.png`
-- **Smart Catalog Modal**: `assets/images/screenshots/catalog.png`
-- **AI Chatbot Modal**: `assets/images/screenshots/chatbot.png`
-- **Workshop Map**: `assets/images/screenshots/map.png`
+## 📸 Cuplikan Antarmuka Aplikasi
+- **Landing Page & Bagian Hero**: `assets/images/screenshots/landing.png`
+- **Jendela Modal Katalog Pintar**: `assets/images/screenshots/catalog.png`
+- **Widget AI Chatbot BotMotif**: `assets/images/screenshots/chatbot.png`
+- **Peta Lokasi Bengkel**: `assets/images/screenshots/map.png`
 
-## 🛣️ Development Roadmap
-- [x] Migrate legacy UI to premium Glassmorphism design system.
-- [x] Integrate robust fallback model chain for Google Gemini AI.
-- [ ] Refactor procedural structure into PSR-4 autoloaded object-oriented architecture.
-- [ ] Implement unit testing using PHPUnit.
+## 🛣️ Peta Jalan Pengembangan (*Roadmap*)
+- [x] Migrasi antarmuka lama ke sistem desain premium *Glassmorphism*.
+- [x] Integrasi rantai fallback multi-model untuk AI Google Gemini.
+- [ ] Restrukturisasi kode prosedural ke dalam arsitektur berorientasi objek (OOP) berbasis standar PSR-4.
+- [ ] Implementasi pengujian otomatis (*Unit Testing*) menggunakan PHPUnit.
 
-## 📄 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+## 📄 Lisensi
+Project ini berada di bawah Lisensi MIT - silakan periksa file LICENSE untuk informasi lebih lanjut.
